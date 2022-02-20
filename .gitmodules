@@ -1,0 +1,12 @@
+[submodule "coriverse"]
+	path = coriverse
+	url = https://github.com/ruralinnovation/coriverse.git
+[submodule "dashboard"]
+	path = dashboard
+	url = https://github.com/ruralinnovation/dashboard.git
+[submodule "rvl"]
+	path = rvl
+	url = https://github.com/ruralinnovation/rvl.git
+[submodule "shiny.worker"]
+	path = shiny.worker
+	url = https://github.com/Appsilon/shiny.worker.git
