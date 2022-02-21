@@ -30,6 +30,6 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "cross-env NODE_ENV=dev ROLLUP_WATCH=TRUE rollup -c -w",
-    "start": "Rscript .exec-shiny-app.R ."
+    "start": "Rscript scripts/execShinyApp.R ."
   }
 }
