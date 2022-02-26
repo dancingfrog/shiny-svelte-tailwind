@@ -10,16 +10,18 @@
   {{ headContent() }}
   {{ use_tracking() }}
 
-  <link rel='stylesheet'  href="styles.css" />
+  <!--link rel="stylesheet" href="tailwind.min.css" /-->
+
+  <link rel="stylesheet" href="bundle.css" />
 
 </head>
 
-<body style="margin:0;padding:0;">
+<body class="bg-gray-200" style="margin:0;padding:0;">
 
-  <div id="app">
+  <div id="app" class="bg-white">
   </div>
 
-  <div id="sidebar" style="padding: 1em;">
+  <div id="sidebar" class="bg-white" style="padding: 1em;">
 
     {{ h3("URL components") }}
     {{ verbatimTextOutput("urlText") }}

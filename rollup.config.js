@@ -4,6 +4,10 @@ import copy from "rollup-plugin-copy";
 import livereload from 'rollup-plugin-livereload';
 import resolve from "rollup-plugin-node-resolve";
 import svelte from "rollup-plugin-svelte";
+import postcss from "rollup-plugin-postcss";
+import preprocess from "svelte-preprocess";
+
+const postcss_config = require("./postcss.config.cjs");
 
 // const production = !process.env.NODE_ENV && !process.env.ROLLUP_WATCH;
 const production = !(process.argv.filter(arg => arg.match(/-w/) !== null).length > 0);
@@ -27,26 +31,25 @@ export default [
         },
         plugins: [
             babel({
-                "runtimeHelpers": true,
-                "plugins": [
-                    "@babel/plugin-transform-async-to-generator",
-                    "@babel/plugin-transform-regenerator",
-                    ["@babel/plugin-transform-runtime", {
-                        "helpers": true,
-                        "regenerator": true
-                    }]
-                ],
-                "presets": [
-                    "@babel/preset-env"
-                ],
-                "exclude": "node_modules/**"
+                "runtimeHelpers": true
             }),
 
             commonjs({ sourceMap: false }),
 
             copy({
                 targets: [
-                    { src: "static/*", dest: "www/" }
+                    { src: "static/*", dest: "www/" },
+                    { src: ["templates/index.html"], dest: "templates/",
+                        // In dev mode, load tailwind.min.css
+                        // transform only works with individual files...
+                        transform: (!production) ? (contents, filename) => contents.toString().replace(
+                            '<!--link rel="stylesheet" href="tailwind.min.css" /-->',
+                            '<link rel="stylesheet" href="tailwind.min.css" />'
+                        ) : (contents, filename) => contents.toString().replace(
+                            '<link rel="stylesheet" href="tailwind.min.css" />',
+                            '<!--link rel="stylesheet" href="tailwind.min.css" /-->'
+                        )
+                    }
                 ]
             }),
 
@@ -56,9 +59,25 @@ export default [
                     importee === "svelte" || importee.startsWith("svelte/")
             }),
 
+            postcss({
+                extensions: ['.css'],
+                extract: true,
+                minimize: !!production,
+                sourceMap: !production,
+                use: [['sass', {
+                    includePaths: [
+                        './src/app.css',
+                        './node_modules'
+                    ]
+                }]]
+            }),
+
             svelte({
                 dev: !production,
-                hydratable: true
+                hydratable: true,
+                preprocess: preprocess({
+                    postcss: postcss_config
+                })
             }),
 
             // In dev mode, watch the `public` directory
