@@ -1,11 +1,7 @@
-
 const typography = require('@tailwindcss/typography');
 
 const config = {
   content: [
-    // './**/{src,static,templates}/**/*.{html,svelte}',
-    // "./{src,static,templates}/**/*.{html,svelte}",
-    // "./src/**/*.{html,svelte}",
     "./src/**/*.svelte",
     './templates/*.html',
     './templates/index.html'
@@ -985,7 +981,5 @@ if (!!process.env.NODE_ENV && process.env.NODE_ENV.match(/dev/) !== null) {
       ]
     }];
 }
-
-
 
 module.exports = config;
