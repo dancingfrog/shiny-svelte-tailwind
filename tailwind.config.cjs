@@ -957,29 +957,4 @@ const config = {
   ]
 }
 
-if (!!process.env.NODE_ENV && process.env.NODE_ENV.match(/dev/) !== null) {
-  // In development, include all tailwind css utility classes
-  config.content = [];
-  config.safelist = [{
-      pattern: /.*/,
-      variants: [
-        "active",
-        "checked",
-        "disabled",
-        "empty",
-        "focus",
-        "focus-within",
-        "focus-visible",
-        "group-focus",
-        "group-hover",
-        "odd",
-        "even",
-        "first",
-        "last",
-        "read-only",
-        "visited"
-      ]
-    }];
-}
-
 module.exports = config;

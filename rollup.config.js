@@ -10,7 +10,13 @@ import preprocess from "svelte-preprocess";
 const postcss_config = require("./postcss.config.cjs");
 
 // const production = !process.env.NODE_ENV && !process.env.ROLLUP_WATCH;
-const production = !(process.argv.filter(arg => arg.match(/-w/) !== null).length > 0);
+const production = !(
+    process.env.NODE_ENV === "dev" ||
+    process.env.NODE_ENV === "development" ||
+    process.env.NODE_ENV === "test" ||
+    process.env.ROLLUP_WATCH ||
+    process.argv.filter(arg => arg.match(/\s-w/) !== null).length > 0
+);
 
 (function (prod_value) {
     console.log("PRODUCTION: ", prod_value);
@@ -53,12 +59,6 @@ export default [
                 ]
             }),
 
-            resolve({
-                browser: true,
-                dedupe: importee =>
-                    importee === "svelte" || importee.startsWith("svelte/")
-            }),
-
             postcss({
                 extensions: ['.css'],
                 extract: true,
@@ -70,6 +70,12 @@ export default [
                         './node_modules'
                     ]
                 }]]
+            }),
+
+            resolve({
+                browser: true,
+                dedupe: importee =>
+                    importee === "svelte" || importee.startsWith("svelte/")
             }),
 
             svelte({
